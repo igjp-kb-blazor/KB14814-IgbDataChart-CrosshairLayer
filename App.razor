@@ -1,0 +1,85 @@
+﻿<div style="max-width: 700px; margin: auto; padding: 24px; display: flex; flex-direction: column; gap: 24px;">
+    <IgbLegend @ref="_legend"></IgbLegend>
+
+    <IgbDataChart Width="100%"
+                  Height="300px"
+                  Legend="_legend"
+                  ComputedPlotAreaMarginMode="ComputedPlotAreaMarginMode.Series">
+        <IgbCategoryXAxis Name="xAxis"
+                          DataSource="_data"
+                          Label="@nameof(DataItem.Index)"
+                          MajorStroke="1">
+        </IgbCategoryXAxis>
+
+        <IgbNumericYAxis Name="yAxis" MinimumValue="10" MaximumValue="16" Interval="1"></IgbNumericYAxis>
+
+        <IgbLineSeries @ref="_lineSeries1"
+                       Title="Sample Data"
+                       DataSource="_data"
+                       XAxisName="xAxis"
+                       YAxisName="yAxis"
+                       ValueMemberPath="@nameof(DataItem.Value1)">
+        </IgbLineSeries>
+        <IgbLineSeries @ref="_lineSeries2"
+                       Title="Sample Data"
+                       DataSource="_data"
+                       XAxisName="xAxis"
+                       YAxisName="yAxis"
+                       ValueMemberPath="@nameof(DataItem.Value2)">
+        </IgbLineSeries>
+        <IgbCrosshairLayer IsAxisAnnotationEnabled="true"
+                           XAxisAnnotationBackground="Black"
+                           TargetSeries="_lineSeries1">
+        </IgbCrosshairLayer>
+        <IgbCrosshairLayer IsAxisAnnotationEnabled="true"
+                           XAxisAnnotationBackground="Black"
+                           TargetSeries="_lineSeries2">
+        </IgbCrosshairLayer>
+        <IgbFinalValueLayer AxisAnnotationBackground="lightGreen"
+                            AxisAnnotationTextColor="DarkGreen"
+                            AxisAnnotationOutline="ForestGreen"
+                            TargetSeries="_lineSeries1">
+        </IgbFinalValueLayer>
+
+        <IgbFinalValueLayer AxisAnnotationBackground="Lavender"
+                            AxisAnnotationTextColor="Indigo"
+                            AxisAnnotationOutline="Purple"
+                            TargetSeries="_lineSeries2">
+        </IgbFinalValueLayer>
+
+
+    </IgbDataChart>
+
+</div>
+
+@code {
+    private IgbLineSeries? _lineSeries1;
+    private IgbLineSeries? _lineSeries2;
+    public class DataItem
+    {
+        public double Index { get; set; }
+        public double? Value1 { get; set; }
+        public double? Value2 { get; set; }
+    }
+
+    private List<DataItem> _data = new()
+    {
+        new(){ Index = 0, Value1 = 12, Value2 = 10 },
+        new(){ Index = 1, Value1 = 14, Value2 = 12 },
+        new(){ Index = 2, Value1 = 11, Value2 = 14  },
+        new(){ Index = 3, Value1 = 13, Value2 = 10  },
+        new(){ Index = 4, Value1 = 15, Value2 = 12 },
+        new(){ Index = 5, Value1 = 12, Value2 = 14  },
+        new(){ Index = 6, Value1 = 14, Value2 = 12  },
+    };
+
+    private IgbLegend? _legend;
+
+    protected override void OnAfterRender(bool firstRender)
+    {
+        if (firstRender)
+        {
+            this.StateHasChanged();
+        }
+    }
+}
